@@ -1,0 +1,10 @@
+﻿[*.cs]
+
+# CA1062: Validate arguments of public methods
+dotnet_diagnostic.CA1062.severity = silent
+
+# CA2007: Consider calling ConfigureAwait on the awaited task
+dotnet_diagnostic.CA2007.severity = silent
+
+# S2933: Fields that are only assigned in the constructor should be "readonly"
+dotnet_diagnostic.S2933.severity = refactoring

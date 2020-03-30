@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using BookListRazor.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,11 +20,16 @@ namespace BookListRazor
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-      services.AddRazorPages();
+      // Add DbContext to the pipeline.
+      services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(Configuration.GetConnectionString("LocalConnection")));
+      // Add API support.
+      services.AddControllersWithViews();
+      // RazorPage services.
+      services.AddRazorPages().AddRazorRuntimeCompilation();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
       if (env.IsDevelopment())
       {
@@ -49,6 +51,8 @@ namespace BookListRazor
 
       app.UseEndpoints(endpoints =>
       {
+        // Map the controllers in the endpoints as well to enable Controller API calls.
+        endpoints.MapControllers();
         endpoints.MapRazorPages();
       });
     }
