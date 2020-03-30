@@ -20,8 +20,11 @@ namespace BookListRazor
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-      // Add DbContext to the pipeline
+      // Add DbContext to the pipeline.
       services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(Configuration.GetConnectionString("LocalConnection")));
+      // Add API support.
+      services.AddControllersWithViews();
+      // RazorPage services.
       services.AddRazorPages().AddRazorRuntimeCompilation();
     }
 
@@ -48,6 +51,8 @@ namespace BookListRazor
 
       app.UseEndpoints(endpoints =>
       {
+        // Map the controllers in the endpoints as well to enable Controller API calls.
+        endpoints.MapControllers();
         endpoints.MapRazorPages();
       });
     }
